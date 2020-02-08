@@ -1,0 +1,22 @@
+<div class="todo-container">
+  <div class="checklist-container">
+      <input class="checkbox"
+             type="checkbox"
+             [checked]="todo.isCompleted"
+             (change)="isComplete($event)"
+      />
+  </div>
+
+  <button *ngIf="!isEdit" (click)="toEdit()">
+
+  <span
+    [ngClass]="{'completed': todo.isCompleted}"
+    class="todo-title"
+  >
+   {{todo.title}}
+  </span>
+  </button>
+  <input *ngIf="isEdit" (keyup.enter)="editToDo(todo.id,todoEditInput.value)" #todoEditInput type="text" placeholder="Todo title...">
+
+  <button (click)=remove.emit(todo.id)>X</button>
+</div>
