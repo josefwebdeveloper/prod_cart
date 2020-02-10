@@ -3,6 +3,7 @@ import { map } from 'rxjs/operators';
 import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
+
 export interface PeriodicElement {
   name: string;
   position: number;
@@ -40,14 +41,14 @@ export class DashboardComponent implements OnInit{
         return [
           { title: 'Card 1', cols: 2, rows: 1 },
           { title: 'Card 2', cols: 2, rows: 4 },
-          { title: 'Card 3', cols: 2, rows: 3 },
+          { title: 'Card 3', cols: 2, rows: 4 },
         ];
       }
 
       return [
         { title: 'Card 1', cols: 2, rows: 1 },
         { title: 'Card 2', cols: 1, rows: 4 },
-        { title: 'Card 3', cols: 1, rows: 3 },
+        { title: 'Card 3', cols: 1, rows: 4 },
       ];
     })
   );

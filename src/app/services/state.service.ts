@@ -3,27 +3,41 @@ import {BehaviorSubject} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {v4 as uuid} from 'uuid';
 import {Product} from '../Product.model';
+import ShortUniqueId from 'short-unique-id';
 
+const uid = new ShortUniqueId();
 
 @Injectable({
   providedIn: 'root'
 })
 export class StateService {
+  url = '../../assets/images/images.jpeg';
   initialState = [
-    {Id: uuid(), Name: 'Milk', Description: 'country milk', Price: 3, Date: this.getCurrentDate()},
-    {Id: uuid(), Name: 'Tea', Description: 'Black Tea', Price: 6, Date: this.getCurrentDate()},
-    {Id: uuid(), Name: 'Coffee', Description: 'Black Coffee', Price: 12, Date: this.getCurrentDate()},
+    {image: this.url, id: uid.randomUUID(8), name: 'Milk', description: 'country milk', price: 3, date: this.getCurrentDate()},
+    {image: this.url, id: uid.randomUUID(8), name: 'Tea', description: 'Black Tea', price: 6, date: this.getCurrentDate()},
+    {image: this.url, id: uid.randomUUID(8), name: 'Coffee', description: 'Black Coffee', price: 12, date: this.getCurrentDate()},
+    {image: this.url, id: uid.randomUUID(8), name: 'Tea', description: 'Black Tea', price: 6, date: this.getCurrentDate()},
+    {image: this.url, id: uid.randomUUID(8), name: 'Sugar', description: 'Sugar', price: 12, date: this.getCurrentDate()},
+    {image: this.url, id: uid.randomUUID(8), name: 'Bread', description: 'Bread', price: 6, date: this.getCurrentDate()},
+    {image: this.url, id: uid.randomUUID(8), name: 'Cookies', description: 'Cookies ', price: 12, date: this.getCurrentDate()},
+    {image: this.url, id: uid.randomUUID(8), name: 'Tea2', description: 'Black Tea', price: 6, date: this.getCurrentDate()},
+    {image: this.url, id: uid.randomUUID(8), name: 'Coffee3', description: 'Black Coffee', price: 12, date: this.getCurrentDate()},
+    {image: this.url, id: uid.randomUUID(8), name: 'Tea4', description: 'Black Tea', price: 6, date: this.getCurrentDate()},
+    {image: this.url, id: uid.randomUUID(8), name: 'Coffee5', description: 'Black Coffee', price: 12, date: this.getCurrentDate()},
+    {image: this.url, id: uid.randomUUID(8), name: 'Tea6', description: 'Black Tea', price: 6, date: this.getCurrentDate()},
+    {image: this.url, id: uid.randomUUID(8), name: 'Coffe8', description: 'Black Coffee', price: 12, date: this.getCurrentDate()},
   ];
-
   private readonly sub = new BehaviorSubject<Product[]>(this.initialState);
+  private readonly subSwitch = new BehaviorSubject<boolean>(false);
 
   readonly products$ = this.sub.asObservable();
+  readonly switch$ = this.subSwitch.asObservable();
 
 
   // readonly completedTodos$ = this.products$.pipe(
   //   map(todos => todos.filter(todo => todo.isCompleted))
   // );
-  // readonly uncompletedTodos$ = this.products$.pipe(
+  // readonly products = this.products$.pipe(
   //   map(todos => todos.filter(todo => !todo.isCompleted))
   // );
 
@@ -37,15 +51,26 @@ export class StateService {
     this.sub.next(val);
   }
 
+  switch(val) {
+    this.subSwitch.next(val);
+  }
+
   addProduct(product) {
     this.products = [
       ...this.products,
-      {Id: uuid(), Name: product.name, Description: product.description, Price: product.price, Date: this.getCurrentDate()}
+      {
+        image: this.url,
+        id: uid.randomUUID(8),
+        name: product.name,
+        description: product.description,
+        price: product.price,
+        date: this.getCurrentDate()
+      }
     ];
   }
 
-  removeTodo(id: string) {
-    this.products = this.products.filter(product => product.Id !== id);
+  removeProd(id: string) {
+    this.products = this.products.filter(product => product.id !== id);
   }
 
   // setCompleted(id: string, isCompleted: boolean) {
@@ -62,22 +87,22 @@ export class StateService {
   // }
 
   editToDo(product) {
-    const prod = this.products.find(el => el.Id === product.Id);
+    const prod = this.products.find(el => el.id === product.id);
 
     if (prod) {
       const index = this.products.indexOf(prod);
       this.products[index] = {
         ...prod,
-        Name: product.name, Description: product.description, Price: product.price
+        name: product.name, description: product.description, price: product.price
       };
       this.products = [...this.products];
     }
   }
 
   getCurrentDate() {
-    let today = new Date();
+    const today = new Date();
     const dd = String(today.getDate()).padStart(2, '0');
-    const mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
     const yyyy = today.getFullYear();
 
     return mm + '/' + dd + '/' + yyyy;

@@ -5,37 +5,25 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { MatGridListModule } from '@angular/material/grid-list';
-import { MatCardModule } from '@angular/material/card';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { LayoutModule } from '@angular/cdk/layout';
-import {MatToolbarModule} from '@angular/material/toolbar';
 import { ProductComponent } from './product/product.component';
-import {MatListModule} from '@angular/material/list';
-import {MatSortModule} from '@angular/material/sort';
-import {MatTableModule} from '@angular/material/table';
+import { ControlComponent } from './control/control.component';
+import { ListProductComponent } from './list-product/list-product.component';
+
+import {SharedModule} from './shared/shared.module';
+
 @NgModule({
   declarations: [
     AppComponent,
     DashboardComponent,
-    ProductComponent
+    ProductComponent,
+    ControlComponent,
+    ListProductComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MatGridListModule,
-    MatCardModule,
-    MatMenuModule,
-    MatIconModule,
-    MatButtonModule,
-    LayoutModule,
-    MatToolbarModule,
-    MatListModule,
-    MatSortModule,
-    MatTableModule
+    SharedModule
   ],
   providers: [],
   bootstrap: [AppComponent]

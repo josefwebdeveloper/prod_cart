@@ -19,3 +19,24 @@
 .dashboard-card-content {
   text-align: center;
 }
+app-control{
+  width: 100%;
+}
+.mat-card{
+  margin: 5px;
+}
+#products-container{
+  display: flex;
+  justify-content: space-between;
+  //height: 630px;
+}
+#control{
+  width: 55%;
+}
+#product-list{
+  width: 55%;
+
+}
+#product{
+  width: 37%;
+}
