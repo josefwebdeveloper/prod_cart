@@ -18,8 +18,7 @@ export class ListProductComponent implements OnInit, OnDestroy {
   subProd: Subscription;
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
-  subEdit = new BehaviorSubject<Product>({date: '', description: '', id: '', image: '', name: '', price: 0});
-  readonly prodEdit$ = this.subEdit.asObservable();
+
   constructor(public stateService: StateService) {
   }
 
@@ -37,9 +36,12 @@ export class ListProductComponent implements OnInit, OnDestroy {
     });
 
   }
-  editProduct(product) {
-    this.subEdit.next(product);
+
+  emitEditProduct(product: Product) {
+    this.stateService.emitProduct(product);
+    this.stateService.switch(true);
   }
+
   deleteProduct(id) {
     if (id) {
       this.stateService.removeProd(id);

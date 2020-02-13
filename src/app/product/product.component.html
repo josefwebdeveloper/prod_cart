@@ -1,8 +1,35 @@
 
-<mat-toolbar *ngIf="stateService.switch$ | async">Create Product</mat-toolbar>
-<form [formGroup]="prodForm"  autocomplete="off" novalidate (ngSubmit)="createProduct(prodForm.value)" fxLayout="column wrap"
+<mat-toolbar *ngIf="!isEdit">Create Product</mat-toolbar>
+<mat-toolbar *ngIf="isEdit">Edit Product</mat-toolbar>
+<div>
+<!--  <input [id]="id" type="file" >-->
+<!--  <label [for]="id" class="button mat-raised-button mat-primary"> label</label>-->
+</div>
+<!--<input-->
+<!--  type="file"-->
+<!--  #file-->
+<!--  style="display: none"-->
+<!--  multiple-->
+<!--/>-->
+<!--<div class="container" fxLayout="column" fxLayoutAlign="space-evenly stretch">-->
+<!--  <h1 mat-dialog-title>Upload Files</h1>-->
+<!--  <div>-->
+<!--    <button-->
+<!--      mat-raised-button-->
+<!--      color="primary"-->
+<!--      class="add-files-btn"-->
+<!--    >-->
+<!--      Add Files-->
+<!--    </button>-->
+<!--  </div>-->
+<form  [formGroup]="prodForm"  autocomplete="off" novalidate (ngSubmit)="productIt(prodForm.value)" fxLayout="column wrap"
       fxLayoutAlign="center center" fxLayoutGap="10px">
-  <mat-card-content>
+<!--  <mat-card-content>-->
+<!--  <mat-form-field>-->
+    <input  type="file" placeholder="file" (change)="onFileChange($event)" class="d-none" formControlName="url" id="url">
+    <mat-hint align="end">file</mat-hint>
+    <mat-error *ngIf="hasError('url', 'required')">file is required</mat-error>
+<!--  </mat-form-field>-->
     <mat-form-field>
       <input matInput type="text" placeholder="Name" formControlName="name" id="name">
       <mat-hint align="end">Name</mat-hint>
@@ -26,9 +53,10 @@
       <mat-error *ngIf="hasError('price', 'required')">Price is required</mat-error>
       <mat-error *ngIf="hasError('price', 'maxlength')">You have more than 6 numbers</mat-error>
     </mat-form-field>
-  </mat-card-content>
+<!--  </mat-card-content>-->
   <mat-card-actions align="center">
-    <button mat-raised-button color="primary" [disabled]="!prodForm.valid">Create</button>
+    <button *ngIf="!isEdit" mat-raised-button color="primary" [disabled]="!prodForm.valid">Create</button>
+    <button *ngIf="isEdit"  mat-raised-button color="primary" [disabled]="!prodForm.valid">Submit</button>
     <button type="button" mat-raised-button color="warn" (click)="onCancel()">Cancel</button>
   </mat-card-actions>
 </form>

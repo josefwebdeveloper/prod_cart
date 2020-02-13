@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, ReplaySubject} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {v4 as uuid} from 'uuid';
 import {Product} from '../Product.model';
@@ -11,6 +11,8 @@ const uid = new ShortUniqueId();
   providedIn: 'root'
 })
 export class StateService {
+
+  baseUrl = '../../assets/images/';
   url = '../../assets/images/images.jpeg';
   initialState = [
     {image: this.url, id: uid.randomUUID(8), name: 'Milk', description: 'country milk', price: 3, date: this.getCurrentDate()},
@@ -27,11 +29,13 @@ export class StateService {
     {image: this.url, id: uid.randomUUID(8), name: 'Tea6', description: 'Black Tea', price: 6, date: this.getCurrentDate()},
     {image: this.url, id: uid.randomUUID(8), name: 'Coffe8', description: 'Black Coffee', price: 12, date: this.getCurrentDate()},
   ];
-  private readonly sub = new BehaviorSubject<Product[]>(this.initialState);
+  private readonly subProducts = new BehaviorSubject<Product[]>(this.initialState);
   private readonly subSwitch = new BehaviorSubject<boolean>(false);
+  private readonly subProduct = new ReplaySubject<Product>();
 
-  readonly products$ = this.sub.asObservable();
+  readonly products$ = this.subProducts.asObservable();
   readonly switch$ = this.subSwitch.asObservable();
+  readonly product$ = this.subProduct.asObservable();
 
 
   // readonly completedTodos$ = this.products$.pipe(
@@ -42,24 +46,38 @@ export class StateService {
   // );
 
   private get products(): Product[] {
-    console.log(this.sub.getValue());
-    return this.sub.getValue();
+    console.log(this.subProducts.getValue());
+    return this.subProducts.getValue();
   }
 
+  getUrl(file) {
+    if (file) {
+      return `${this.url}file`;
+    } else {
+      return this.url;
+    }
+  }
 
   private set products(val: Product[]) {
-    this.sub.next(val);
+    console.log(val, 'set');
+
+    this.subProducts.next(val);
   }
 
   switch(val) {
     this.subSwitch.next(val);
   }
 
+  emitProduct(val) {
+    this.subProduct.next(val);
+  }
+
   addProduct(product) {
+    console.log('add');
     this.products = [
       ...this.products,
       {
-        image: this.url,
+        image: this.getUrl(product.url),
         id: uid.randomUUID(8),
         name: product.name,
         description: product.description,
@@ -86,16 +104,19 @@ export class StateService {
   //   }
   // }
 
-  editToDo(product) {
+  editProduct(product) {
     const prod = this.products.find(el => el.id === product.id);
 
     if (prod) {
+      console.log(prod, 'prod');
+
       const index = this.products.indexOf(prod);
       this.products[index] = {
         ...prod,
         name: product.name, description: product.description, price: product.price
       };
-      this.products = [...this.products];
+      console.log(this.products[index]);
+      // this.products = [...this.products];
     }
   }
 
